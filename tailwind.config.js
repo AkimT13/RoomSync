@@ -5,6 +5,9 @@ module.exports = {
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
+      fontFamily: {
+        'roomFont': ["Inria Serif"]
+      },
       colors: {
         'roomDarkBlue' : '#4B4E6D',
         'roomLightGreen' : '#A1E887'
