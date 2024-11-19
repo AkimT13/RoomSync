@@ -3,7 +3,7 @@ import React from 'react'
 import '../global.css'
 import { useFonts } from "expo-font";
 import { InriaSerif_400Regular, InriaSerif_700Bold } from "@expo-google-fonts/inria-serif";
-import Login from './login';
+import Auth from './Auth';
 
 
 const App = () => {
@@ -13,7 +13,7 @@ const App = () => {
     
   return (
 
-    <Login/>
+    <Auth/>
 
 
 

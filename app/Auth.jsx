@@ -8,7 +8,7 @@ import {
   InriaSerif_700Bold,
 } from "@expo-google-fonts/inria-serif";
 
-export default function Login() {
+export default function Auth() {
   const [signInPage, changePage] = useState(true);
 
   const toggle = () => {
@@ -48,9 +48,7 @@ export default function Login() {
             <Text className="text-center center font-semibold">Sign In</Text>
           </View>
         </Pressable>
-        <Text>
-          Current Page: {signInPage ? "Sign In Page" : "Sign Up Page"}
-        </Text>
+
 
         <Text className="text-center mt-5 text-white font-semibold">
           Or Sign in With
