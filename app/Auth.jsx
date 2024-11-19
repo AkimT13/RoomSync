@@ -80,29 +80,45 @@ export default function Auth() {
         </View>
       </Pressable>
       <View>
-        <Text className="font-bold color-white top-36 left-10 text-4xl">Create your account</Text>
+        <Text className="font-bold color-white top-40 left-10 text-4xl">Create your account</Text>
       </View>
       <View className="flex flex-col justify-start snap-center w-96 h-full self-center gap-5">
         <TextInput
         placeholder="Full Name"
-        className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-44"
+        className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-48"
         />
         <TextInput
         placeholder="Enter Email"
-        className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-44"
+        className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-48"
         />
         <TextInput
         placeholder="Enter Password"
-        className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-44"
+        className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-48"
         />
         <TextInput
         placeholder="Confirm Password"
-        className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-44"
+        className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-48"
         />
         <Pressable>
-        <View className="flex flex-col text-center bg-roomLightGreen w-96 h-16 rounded-xl pi-6 justify-center top-52">
+        <View className="flex flex-col text-center bg-roomLightGreen w-96 h-16 rounded-xl pi-6 justify-center top-56">
             <Text className="text-center center font-semibold">Sign In</Text>
           </View>
+        </Pressable>
+
+        <Pressable>
+        <Text className="text-center mt-5 text-white font-semibold top-64">
+          Or Sign up With
+        </Text>
+        <View className="flex flex-row gap-4 justify-center w-96  items-center top-72">
+          <Image
+            source={require("../assets/images/signApple.png")}
+            className="w-16 h-16 "
+          />
+          <Image
+            source={require("../assets/images/googleIcon.png")}
+            className="w-16 h-16"
+          />
+        </View>
         </Pressable>
       </View>
     </View>
