@@ -10,7 +10,8 @@ module.exports = {
       },
       colors: {
         'roomDarkBlue' : '#4B4E6D',
-        'roomLightGreen' : '#A1E887'
+        'roomLightGreen' : '#A1E887',
+        'roomPink' : '#FF7B9C'
       }
     },
   },
