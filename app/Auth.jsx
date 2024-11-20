@@ -1,26 +1,56 @@
-import { Text, View, Image, TextInput, Pressable } from "react-native";
-import React, { useState, useEffect } from "react";
-import { NativeViewGestureHandler } from "react-native-gesture-handler";
+import { Text, View, Image, TextInput, Pressable, Alert } from "react-native";
+import React, { useState } from "react";
 import "../global.css";
-import { useFonts } from "expo-font";
-import {
-  InriaSerif_400Regular,
-  InriaSerif_700Bold,
-} from "@expo-google-fonts/inria-serif";
+import { supabase } from "../utils/supabase.ts";
 
 export default function Auth() {
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    fullName: "",
+    confirmPassword: "",
+  });
   const [signInPage, changePage] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const handleInputChange = (key, value) => {
+    setFormData({ ...formData, [key]: value });
+  };
+
+  async function signInWithEmail() {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (error) Alert.alert(error.message);
+    setLoading(false);
+  }
+
+  async function signUpWithEmail() {
+    setLoading(true);
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (error) Alert.alert(error.message);
+    if (!session) Alert.alert("Please check your inbox for email verification!");
+    setLoading(false);
+  }
 
   const toggle = () => {
-    changePage(!signInPage);
+  
+    changePage((prev) => !prev);
   };
 
   return signInPage ? (
-    <View
-      style={{ fontFamily: "InriaSerif_Bold", color: "#A1E887" }}
-      className=" text-roomLightGreen flex-1 bg-cover bg-roomDarkBlue"
-    >
-      <Text className="text-center text-roomLightGreen font-roomFont mt-72 text-7xl ">
+    <View className="text-roomLightGreen flex-1 bg-cover bg-roomDarkBlue">
+      <Text className="text-center text-roomLightGreen font-roomFont mt-72 text-7xl">
         LivingLink
       </Text>
       <View className="p-5 w-1/2">
@@ -32,42 +62,42 @@ export default function Auth() {
         <TextInput
           placeholder="Email"
           className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6"
+          onChangeText={(text) => handleInputChange("email", text)}
+          value={formData.email}
         />
         <TextInput
           placeholder="Password"
           className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6"
+          onChangeText={(text) => handleInputChange("password", text)}
+          value={formData.password}
         />
         <Pressable>
-          <View className="w-auto h-auto  ml-60" onClick>
-            <Text className=" text-white cursor-pointer">Forgot Password?</Text>
+          <View className="w-auto h-auto ml-60">
+            <Text className="text-white cursor-pointer">Forgot Password?</Text>
           </View>
         </Pressable>
-
-        <Pressable>
-          <View className="flex flex-col text-center bg-roomLightGreen w-96 h-16 rounded-xl pi-6 justify-center mt-4">
-            <Text className="text-center center font-semibold">Sign In</Text>
+        <Pressable onPress={signInWithEmail}>
+          <View className="flex flex-col text-center bg-roomLightGreen w-96 h-16 rounded-xl justify-center mt-4">
+            <Text className="text-center font-semibold">Sign In</Text>
           </View>
         </Pressable>
-
-
         <Text className="text-center mt-5 text-white font-semibold">
           Or Sign in With
         </Text>
-        <View className="flex flex-row gap-4 justify-center w-96  items-center ">
+        <View className="flex flex-row gap-4 justify-center w-96 items-center">
           <Image
             source={require("../assets/images/signApple.png")}
-            className="w-16 h-16 "
+            className="w-16 h-16"
           />
           <Image
             source={require("../assets/images/googleIcon.png")}
             className="w-16 h-16"
           />
         </View>
-
         <Pressable onPress={toggle}>
           <Text className="text-center text-white mt-2">
             Don't have an account?{" "}
-            <Text className="font-bold text-white">Sign Up</Text>{" "}
+            <Text className="font-bold text-white">Sign Up</Text>
           </Text>
         </Pressable>
       </View>
@@ -80,45 +110,39 @@ export default function Auth() {
         </View>
       </Pressable>
       <View>
-        <Text className="font-bold color-white top-40 left-10 text-4xl">Create your account</Text>
+        <Text className="font-bold text-white top-40 left-10 text-4xl">
+          Create your account
+        </Text>
       </View>
       <View className="flex flex-col justify-start snap-center w-96 h-full self-center gap-5">
         <TextInput
-        placeholder="Full Name"
-        className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-48"
+          placeholder="Full Name"
+          className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-48"
+          onChangeText={(text) => handleInputChange("fullName", text)}
+          value={formData.fullName}
         />
         <TextInput
-        placeholder="Enter Email"
-        className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-48"
+          placeholder="Enter Email"
+          className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-48"
+          onChangeText={(text) => handleInputChange("email", text)}
+          value={formData.email}
         />
         <TextInput
-        placeholder="Enter Password"
-        className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-48"
+          placeholder="Enter Password"
+          className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-48"
+          onChangeText={(text) => handleInputChange("password", text)}
+          value={formData.password}
         />
         <TextInput
-        placeholder="Confirm Password"
-        className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-48"
+          placeholder="Confirm Password"
+          className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-48"
+          onChangeText={(text) => handleInputChange("confirmPassword", text)}
+          value={formData.confirmPassword}
         />
-        <Pressable>
-        <View className="flex flex-col text-center bg-roomLightGreen w-96 h-16 rounded-xl pi-6 justify-center top-56">
-            <Text className="text-center center font-semibold">Sign In</Text>
+        <Pressable onPress={signUpWithEmail}>
+          <View className="flex flex-col text-center bg-roomLightGreen w-96 h-16 rounded-xl justify-center top-56">
+            <Text className="text-center font-semibold">Sign Up</Text>
           </View>
-        </Pressable>
-
-        <Pressable>
-        <Text className="text-center mt-5 text-white font-semibold top-64">
-          Or Sign up With
-        </Text>
-        <View className="flex flex-row gap-4 justify-center w-96  items-center top-72">
-          <Image
-            source={require("../assets/images/signApple.png")}
-            className="w-16 h-16 "
-          />
-          <Image
-            source={require("../assets/images/googleIcon.png")}
-            className="w-16 h-16"
-          />
-        </View>
         </Pressable>
       </View>
     </View>
