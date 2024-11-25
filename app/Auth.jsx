@@ -2,6 +2,7 @@ import { Text, View, Image, TextInput, Pressable, Alert } from "react-native";
 import React, { useState } from "react";
 import "../global.css";
 import { supabase } from "../utils/supabase.ts";
+import {AppleAuth} from "../components/AppleAuth.tsx"
 
 export default function Auth() {
   const [formData, setFormData] = useState({
@@ -63,7 +64,7 @@ export default function Auth() {
           placeholder="Email"
           className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6"
           onChangeText={(text) => handleInputChange("email", text)}
-          value={formData.email}
+          value ={formData.email}
         />
         <TextInput
           placeholder="Password"
@@ -84,17 +85,14 @@ export default function Auth() {
         <Text className="text-center mt-5 text-white font-semibold">
           Or Sign in With
         </Text>
-        <View className="flex flex-row gap-4 justify-center w-96 items-center">
-          <Image
-            source={require("../assets/images/signApple.png")}
-            className="w-16 h-16"
-          />
+        <View className="flex flex-col gap-4 justify-center w-96 items-center">
+          
           <Image
             source={require("../assets/images/googleIcon.png")}
             className="w-16 h-16"
           />
         </View>
-        <Pressable onPress={toggle}>
+        <Pressable onPress={toggle} className = "border">
           <Text className="text-center text-white mt-2">
             Don't have an account?{" "}
             <Text className="font-bold text-white">Sign Up</Text>
@@ -104,7 +102,7 @@ export default function Auth() {
     </View>
   ) : (
     <View className="flex-1 bg-cover bg-roomDarkBlue">
-      <Pressable onPress={toggle}>
+      <Pressable onPress={toggle} className = ''>
         <View className="absolute top-20 left-5 flex flex-row items-center justify-center bg-roomPink px-8 py-3 rounded-full shadow-md">
           <Text className="text-white text-sm font-medium">Back</Text>
         </View>
@@ -133,18 +131,24 @@ export default function Auth() {
           onChangeText={(text) => handleInputChange("password", text)}
           value={formData.password}
         />
-        <TextInput
+        {/* <TextInput
           placeholder="Confirm Password"
           className="border border-b w-96 h-16 bg-roomLightGreen rounded-xl p-6 top-48"
           onChangeText={(text) => handleInputChange("confirmPassword", text)}
           value={formData.confirmPassword}
-        />
-        <Pressable onPress={signUpWithEmail}>
-          <View className="flex flex-col text-center bg-roomLightGreen w-96 h-16 rounded-xl justify-center top-56">
+        />    */}
+        
+        
+          <View className="flex flex-col text-center bg-roomLightGreen w-96 h-16 rounded-xl justify-center top-56 ">
+            <Pressable onPress={signUpWithEmail} className = "">
             <Text className="text-center font-semibold">Sign Up</Text>
+            </Pressable>
           </View>
-        </Pressable>
+        
+        
+        
       </View>
+
     </View>
   );
 }

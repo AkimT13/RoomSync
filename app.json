@@ -9,7 +9,9 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "usesAppleSignIn": true
+      
     },
     "android": {
       "adaptiveIcon": {
@@ -23,6 +25,8 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      "@react-native-google-signin/google-signin",
+      "expo-apple-authentication",
       "expo-router",
       [
         "expo-splash-screen",
@@ -33,6 +37,12 @@
           "backgroundColor": "#ffffff"
         }
       ]
+      
+      
+      
+      
+
+
     ],
     "experiments": {
       "typedRoutes": true
