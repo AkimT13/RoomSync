@@ -139,7 +139,7 @@ export default function Auth() {
         />    */}
         
         
-          <View className="flex flex-col text-center bg-roomLightGreen w-96 h-16 rounded-xl justify-center top-56 ">
+          <View className="flex flex-col text-center bg-roomLightGreen w-96 h-16 rounded-xl justify-center top-56">
             <Pressable onPress={signUpWithEmail} className = "">
             <Text className="text-center font-semibold">Sign Up</Text>
             </Pressable>
