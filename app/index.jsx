@@ -1,26 +1,20 @@
-import { View, Text, Button, TextInput, Image } from 'react-native'
-import React from 'react'
-import '../global.css'
-import { useFonts } from "expo-font";
-import { InriaSerif_400Regular, InriaSerif_700Bold } from "@expo-google-fonts/inria-serif";
-import Auth from './Auth';
-import Choice from './Choice';
+import React, { useState, useEffect } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { supabase } from '../utils/supabase';
+
+
+import OnboardingNavigator from './OnboardScreens'
 
 
 
-const App = () => {
-  const action = () =>{
-    return 'stuff'
-  }
-    
-  return (
+export default function App() {
 
-    <Choice/>
+  return(
 
 
-
-    
+    <OnboardingNavigator/>
   )
-}
 
-export default App
+}
+  
