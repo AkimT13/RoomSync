@@ -12,6 +12,14 @@ const SignInScreen = ({ navigation }) => {
       alert(error.message);
     } else {
       alert('Sign-in successful!');
+      const {data:{user}} = await supabase.auth.getUser()
+
+      const role = supabase.from('profiles').select('role').eq(user.id)
+      console.log(role)
+      navigation.navigate(role === 'landlord' ? 'LandLordDashboard' : "RenterDashboard")
+      
+
+
     }
   };
 
