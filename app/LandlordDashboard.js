@@ -36,11 +36,13 @@ const LandlordDashboardScreen = ({ navigation }) => {
     navigation.navigate('CreateSpace');
   };
 
+  
+
   const renderSpaceItem = ({ item }) => (
     <View className="bg-roomLightGreen p-4 rounded mb-4 shadow-md">
       <Text className="text-lg font-bold text-roomDarkBlue">{item.name}</Text>
       <Text className="text-roomDarkBlue">Address: {item.address}</Text>
-      <TouchableOpacity className="bg-roomPink px-3 py-1 mt-3 rounded">
+      <TouchableOpacity onPress = {() => navigation.navigate('SpaceDetails', { space: item })} className="bg-roomPink px-3 py-1 mt-3 rounded">
         <Text className="text-white text-center">View Details</Text>
       </TouchableOpacity>
     </View>

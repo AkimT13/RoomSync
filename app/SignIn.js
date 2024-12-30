@@ -10,17 +10,34 @@ const SignInScreen = ({ navigation }) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       alert(error.message);
-    } else {
-      alert('Sign-in successful!');
-      const {data:{user}} = await supabase.auth.getUser()
-
-      const role = supabase.from('profiles').select('role').eq(user.id)
-      console.log(role)
-      navigation.navigate(role === 'landlord' ? 'LandLordDashboard' : "RenterDashboard")
-      
-
-
+      return; // Exit the function on error
     }
+  
+    alert('Sign-in successful!');
+  
+    // Get the authenticated user
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+    if (userError || !user) {
+      console.log('Error fetching user:', userError?.message || 'No user logged in.');
+      return;
+    }
+  
+    // Fetch the user's profile
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+  
+    if (profileError) {
+      console.log('Error fetching profile:', profileError.message);
+      return; // Exit the function on error
+    }
+  
+    console.log("Role: " + profile.role);
+  
+    // Navigate based on the user's role
+    navigation.navigate(profile.role === 'landlord' ? 'LandLordDashboard' : 'RenterDashboard');
   };
 
   return (
