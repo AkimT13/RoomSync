@@ -1,67 +1,113 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { supabase } from '../utils/supabase';
 
-const SpaceDetailsScreen = ({ route,navigation }) => {
-  const { space } = route.params; // Get the space object from navigation params
-  const [rooms, setRooms] = useState([]); // State to hold the rooms
+
+const SpaceDetailsScreen = ({ route, navigation }) => {
+  const { space } = route.params; // Passed space data
+  const [spaceDetails, setSpaceDetails] = useState(space); // Use passed data as initial state
+  const [rooms, setRooms] = useState([]); // State to store rooms
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch rooms when the component loads
-    const loadRooms = async () => {
-      const fetchedRooms = await fetchRooms(space.id); // Query rooms with space.id
-      setRooms(fetchedRooms);
+    const loadSpaceDetails = async () => {
+      const updatedSpace = await fetchSpaceDetails(space.id);
+      if (updatedSpace) {
+        setSpaceDetails(updatedSpace);
+      }
+      await loadRooms(space.id);
     };
 
-    loadRooms();
-  }, [space.id]); // Dependency on space ID
+    loadSpaceDetails();
+  }, [space.id]);
 
-  // Function to fetch rooms
-  const fetchRooms = async (spaceId) => {
-    const { data: rooms, error } = await supabase
-      .from('rooms')
+  const fetchSpaceDetails = async (spaceId) => {
+    const { data, error } = await supabase
+      .from('spaces')
       .select('*')
-      .eq('space_id', spaceId);
+      .eq('id', spaceId)
+      .single();
 
     if (error) {
-      console.error('Error fetching rooms:', error.message);
-      return [];
+      console.error('Error fetching space details:', error.message);
+      return null;
     }
-
-    return rooms;
+    return data;
   };
-  const handleBack = () =>{
-    navigation.navigate("LandLordDashboard")
-  }
+
+  const copyToClipboard = (text) => {
+    Clipboard.setString(text); // Copies the text to the clipboard
+    console.log(text);
+    Alert.alert('Copied to Clipboard', `You copied: ${text}`);
+  };
+
+  const loadRooms = async (spaceId) => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('rooms')
+        .select('*')
+        .eq('space_id', spaceId);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      setRooms(data);
+    } catch (error) {
+      console.error('Error loading rooms:', error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <View className="flex-1 bg-roomLightGreen p-16 ">
-        <TouchableOpacity onPress={handleBack}>
+    <View className="p-16 bg-roomLightGreen min-h-screen">
+      {/* Go Back Button */}
+      <TouchableOpacity onPress={() => navigation.goBack()} className="mb-4">
+        <Text className="text-black">Go Back</Text>
+      </TouchableOpacity>
 
-            <Text >Back</Text>
-        </TouchableOpacity>
-        
-      <Text className="text-2xl font-bold text-roomDarkBlue">{space.name}</Text>
-      <Text className="text-lg text-roomDarkBlue mt-4">Address: {space.address}</Text>
-      <Text className="text-roomDarkBlue mt-2">Rooms:</Text>
+      {/* Space Details */}
+      <Text className="text-2xl font-bold text-roomDarkBlue mb-4">{spaceDetails.name}</Text>
+      <Text className="text-lg text-roomDarkBlue">Address: {spaceDetails.address}</Text>
+      <Text className="text-roomDarkBlue mt-2">
+        Created At: {new Date(spaceDetails.created_at).toLocaleDateString()}
+      </Text>
 
-      {/* List of Rooms */}
-      {rooms.length > 0 ? (
+      {/* Add Room Button */}
+      <TouchableOpacity
+        className="bg-roomPink py-2 px-4 mt-6 rounded"
+        onPress={() => navigation.navigate('AddRoom', { spaceId: spaceDetails.id })}
+      >
+        <Text className="text-white text-center">Add Room</Text>
+      </TouchableOpacity>
+
+      {/* Rooms List */}
+      <Text className="text-xl font-bold text-roomDarkBlue mt-8 mb-4">Rooms in this Space</Text>
+      {loading ? (
+        <Text className="text-roomDarkBlue">Loading rooms...</Text>
+      ) : rooms.length > 0 ? (
         <FlatList
           data={rooms}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <View className="bg-roomPink p-3 mb-3 rounded ">
-              <Text className="text-white font-bold">{item.name}</Text>
-              <Text className="text-white">Rent: ${item.rent_amount}</Text>
-              <Text className="text-white">
-                {item.is_available ? 'Available' : 'Occupied'}
+            <View className="bg-white p-4 mb-4 rounded shadow">
+              <Text className="text-lg font-bold text-roomDarkBlue">{item.name}</Text>
+              <Text className="text-roomDarkBlue">Rent: ${item.rent_amount}</Text>
+              
+              <Text selectable = {true} className="text-roomDarkBlue">ID: {item.id}</Text>
+             
+              
+             
+              <Text className="text-roomDarkBlue">
+                Status: {item.is_available ? 'Available' : 'Occupied'}
               </Text>
             </View>
           )}
         />
       ) : (
-        <Text className="text-roomDarkBlue mt-4">No rooms found for this space.</Text>
+        <Text className="text-roomDarkBlue">No rooms have been created in this space yet.</Text>
       )}
     </View>
   );

@@ -10,6 +10,7 @@ import CreateSpaceScreen from './CreateSpaceScreen';
 import LandlordDashboardScreen from './LandlordDashboard';
 import RenterDashboardScreen from './RenterDashboard';
 import SpaceDetailsScreen from './SpaceDetails';
+import AddRoomScreen from './AddRoom';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +25,8 @@ const OnboardingNavigator = () => (
       <Stack.Screen options = {{headerShown: false}} name = "LandLordDashboard" component = {LandlordDashboardScreen} />
       <Stack.Screen options = {{headerShown: false}} name = "RenterDashboard" component = {RenterDashboardScreen} />
       <Stack.Screen options = {{headerShown: false}} name = "SpaceDetails" component = {SpaceDetailsScreen} />
+      <Stack.Screen options = {{headerShown: false}} name = "AddRoom" component = {AddRoomScreen} />
+      
     </Stack.Navigator>
   </NavigationContainer>
 );
