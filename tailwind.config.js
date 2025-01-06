@@ -16,8 +16,9 @@ module.exports = {
         'livingLightBlue' : '#7D98A1',
         'livingDarkGrey' : '#5E6572',
         'livingLightGrey' : '#A9B4C2',
-        'livingWhite' : '#EEFIEF'
-
+        'livingWhite' : '#EEFIEF',
+        'signIn' : '#4C8DE0',
+        'inputField' : '#A9B4C2'
       }
     },
   },

@@ -41,35 +41,38 @@ const SignInScreen = ({ navigation }) => {
   };
 
   return (
-    <View className="flex-1 justify-center bg-roomDarkBlue px-4">
-        <Text className = 'text-center text-roomLightGreen text-4xl p-3'>Living Link</Text>
+    <View className="flex-1 justify-center bg-livingWhite px-4">
+        <Text className = 'text-left text-black text-4xl p-3 font-bold'>Welcome!</Text>
         
       <TextInput
         placeholder="Email"
-        placeholderTextColor="#a8e6cf"
+        placeholderTextColor="black"
         value={email}
         onChangeText={setEmail}
-        className="bg-roomLightGreen text-roomDarkBlue p-3 rounded mb-4"
+        className="bg-inputField text-roomDarkBlue p-5 rounded-3xl mb-5"
       />
       <TextInput
         placeholder="Password"
-        placeholderTextColor="#a8e6cf"
+        placeholderTextColor="black"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
-        className="bg-roomLightGreen text-roomDarkBlue p-3 rounded mb-4"
+        className="bg-inputField text-roomDarkBlue p-5 rounded-3xl mb-4"
       />
+      <TouchableOpacity className="">
+        <Text className="text-black text-right mb-4">Forgot password?</Text>
+      </TouchableOpacity>
       <TouchableOpacity
         onPress={handleSignIn}
-        className="bg-roomPink p-3 rounded mb-2"
+        className="bg-signIn p-3 rounded-2xl mb-3"
       >
-        <Text className="text-white text-center">Sign In</Text>
+        <Text className="text-white text-center text-xl">Sign In</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate('SignUp')}
-        className="bg-roomLightGreen p-3 rounded"
+        className="bg-livingDarkGrey p-3 rounded-2xl"
       >
-        <Text className="text-roomDarkBlue text-center">Sign Up</Text>
+        <Text className="text-white text-center text-xl">I don't have an account</Text>
       </TouchableOpacity>
     </View>
   );
