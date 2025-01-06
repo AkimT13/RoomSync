@@ -1,105 +1,67 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+// RenterDashboardScreen.js
+import React, { useState, useEffect } from 'react';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { supabase } from '../utils/supabase';
+import JoinRoom from './JoinRoom';
+import TaskList from './TaskList';
 
-const RenterDashboardScreen = () => {
-  const [roomId, setRoomId] = useState('');
-  const [loading, setLoading] = useState(false);
+const RenterDashboardScreen = ({navigation}) => {
+  const [hasJoinedRoom, setHasJoinedRoom] = useState(null); // null indicates loading state
 
-  const handleJoinRoom = async () => {
-    if (!roomId.trim()) {
-      Alert.alert('Error', 'Please enter a valid Room ID');
-      return;
-    }
+  useEffect(() => {
+    const checkRoomMembership = async () => {
+      try {
+        // Get the authenticated user
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
 
-    try {
-      setLoading(true);
+        if (authError || !user) {
+          throw new Error('User not authenticated');
+        }
 
-      // Get the authenticated user
-      const {
-        data: { user },
-        error: authError,
-      } = await supabase.auth.getUser();
+        // Check if the user is associated with any active tenant record
+        const { data: tenant, error: tenantError } = await supabase
+          .from('tenants')
+          .select('*')
+          .eq('renter_id', user.id)
+          .eq('is_active', true)
+          .single();
 
-      if (authError || !user) {
-        throw new Error('User not authenticated');
+        if (tenantError && tenantError.code !== 'PGRST116') { // PGRST116: No rows found
+          throw new Error('Error checking tenant status');
+        }
+
+        setHasJoinedRoom(tenant ? true : false);
+      } catch (error) {
+        console.error(error.message);
+        setHasJoinedRoom(false); // Default to false on error
       }
+    };
 
-      // Check if the room exists
-      const { data: room, error: roomError } = await supabase
-        .from('rooms')
-        .select('*')
-        .eq('id', roomId)
-        .single();
+    checkRoomMembership();
+  }, []);
 
-      if (roomError || !room) {
-        throw new Error('Room not found');
-      }
-
-      // Ensure the room is available
-      if (!room.is_available) {
-        throw new Error('This room is already occupied');
-      }
-
-      // Add the renter to the tenants table
-      const { error: addTenantError } = await supabase
-        .from('tenants')
-        .insert({
-          space_id: room.space_id, // Reference the space associated with the room
-          renter_id: user.id,
-          is_active: true,
-          amount_due: room.rent_amount, // Set initial rent amount
-        });
-
-      if (addTenantError) {
-        throw new Error('Failed to join the room');
-      }
-
-      // Update the room to set it as unavailable and assign the tenant
-      const { error: updateRoomError } = await supabase
-        .from('rooms')
-        .update({ tenant_id: user.id, is_available: false })
-        .eq('id', roomId);
-
-      if (updateRoomError) {
-        throw new Error('Failed to update room status');
-      }
-
-      Alert.alert('Success', `You have successfully joined the room: ${room.name}`);
-      setRoomId(''); // Clear input
-    } catch (error) {
-      console.error(error.message);
-      Alert.alert('Error', error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (hasJoinedRoom === null) {
+    // Still loading
+    return (
+      <View className="flex-1 justify-center items-center bg-roomLightGreen">
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
-    <View className="flex-1 justify-center items-center bg-roomLightGreen px-4">
-      <Text className="text-2xl font-bold text-roomDarkBlue mb-6">
-        Welcome to the Renter Dashboard!
-      </Text>
-      <Text className="text-lg text-roomDarkBlue mb-4">
-        Enter the Room ID provided by your landlord to join a specific room.
-      </Text>
-
-      <TextInput
-        placeholder="Enter Room ID"
-        className="bg-white p-3 rounded w-full text-roomDarkBlue mb-4"
-        value={roomId}
-        onChangeText={setRoomId}
-      />
-
-      <TouchableOpacity
-        onPress={handleJoinRoom}
-        className={`py-3 px-6 rounded ${
-          loading ? 'bg-gray-400' : 'bg-roomPink'
-        }`}
-        disabled={loading}
-      >
-        <Text className="text-white text-center">{loading ? 'Joining...' : 'Join Room'}</Text>
-      </TouchableOpacity>
+    <View className="flex-1 bg-roomLightGreen px-4 p-24">
+      {hasJoinedRoom ? (
+        <View className="justify-center items-center">
+          <Text className="text-2xl font-bold text-roomDarkBlue">
+            Renter Dashboard
+          </Text>
+          {/* Additional dashboard content goes here */}
+          <TaskList />
+        </View>
+      ) : (
+        <JoinRoom onRoomJoined={() => setHasJoinedRoom(true)} />
+      )}
     </View>
   );
 };

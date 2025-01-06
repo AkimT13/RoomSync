@@ -9,6 +9,7 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
+      "bundleIdentifier": "com.LivingLink.livinglink",
       "supportsTablet": true,
       "usesAppleSignIn": true
       
@@ -25,8 +26,7 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      /*"@react-native-google-signin/google-signin",
-      "expo-apple-authentication",*/
+      
       "expo-router",
       [
         "expo-splash-screen",
