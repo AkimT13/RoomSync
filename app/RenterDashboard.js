@@ -57,7 +57,7 @@ const RenterDashboardScreen = ({navigation}) => {
             Renter Dashboard
           </Text>
           {/* Additional dashboard content goes here */}
-          <TaskList />
+          <TaskList navigation={navigation} />
         </View>
       ) : (
         <JoinRoom onRoomJoined={() => setHasJoinedRoom(true)} />

@@ -7,7 +7,7 @@ const TaskList = ({ navigation }) => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    const fetchTasks = async ({navigation}) => {
+    const fetchTasks = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return;
 

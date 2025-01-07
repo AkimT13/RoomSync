@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { supabase } from '../utils/supabase';
 
-const CreateTask = ({ spaceId, onTaskCreated}) => {
+const CreateTask = ({ spaceId, onTaskCreated, navigation}) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
@@ -19,6 +19,8 @@ const CreateTask = ({ spaceId, onTaskCreated}) => {
       setLoading(true);
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error('User not authenticated');
+      
+      
 
       const { error } = await supabase.from('tasks').insert({
         space_id: spaceId,
@@ -38,15 +40,18 @@ const CreateTask = ({ spaceId, onTaskCreated}) => {
       setDueDate('');
       setFrequency(null);
       onTaskCreated(); // Refresh task list
+      
     } catch (error) {
       Alert.alert('Error', error.message);
     } finally {
       setLoading(false);
+      navigation.navigate('RenterDashboard')
+
     }
   };
 
   return (
-    <View className="p-4 bg-roomLightGreen min-h-screen">
+    <View className="p-16 bg-roomLightGreen min-h-screen">
       <Text className="text-2xl font-bold text-roomDarkBlue mb-4">Create a Task</Text>
       <TextInput placeholder="Task Title" className="bg-white p-3 rounded mb-4" value={title} onChangeText={setTitle} />
       <TextInput placeholder="Task Description" className="bg-white p-3 rounded mb-4" value={description} onChangeText={setDescription} />

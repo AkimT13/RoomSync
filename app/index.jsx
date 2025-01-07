@@ -11,9 +11,6 @@ import OnboardingNavigator from './OnboardScreens'
 export default function App() {
 
   return(
-
-
-    
     <OnboardingNavigator/>
   )
 
