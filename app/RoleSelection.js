@@ -14,7 +14,9 @@ export default function RoleSelectionScreen({navigation }) {
         if (user) {
           const { error } = await supabase
             .from('profiles')
-            .insert({ role:role, id:user.id })
+            .update({ role:role })
+            .eq('id',user.id)
+            
             
             
     

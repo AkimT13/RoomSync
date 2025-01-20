@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { supabase } from '../utils/supabase';
-
+import NavBar from './Navbar';
 const LandlordDashboardScreen = ({ navigation }) => {
   const [spaces, setSpaces] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -72,6 +72,7 @@ const LandlordDashboardScreen = ({ navigation }) => {
           >
             <Text className="text-white text-center text-lg ">Add New Space</Text>
           </TouchableOpacity>
+          <NavBar/> 
         </>
       )}
     </View>

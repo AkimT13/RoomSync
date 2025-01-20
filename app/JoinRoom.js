@@ -56,11 +56,11 @@ const JoinRoom = ({ onRoomJoined }) => {
       // Update the room to set renterJoined = true
       const { error: updateRoomError } = await supabase
         .from('rooms')
-        .update({ renterJoined: true, tenant_id: user.id })
+        .update({ renterjoined: true, tenant_id: user.id })
         .eq('id', roomId);
 
       if (updateRoomError) {
-        throw new Error('Failed to update room status');
+        throw new Error('Failed to update room status' + updateRoomError.message);
       }
 
       Alert.alert('Success', `You have successfully joined the room: ${room.name}`);
