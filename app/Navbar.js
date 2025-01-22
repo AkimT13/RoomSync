@@ -23,7 +23,7 @@ const Navbar = ({ navigation }) => {
       </TouchableOpacity>
 
       {/* Profile Button */}
-      <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+      <TouchableOpacity onPress={() => navigation.navigate('RenterProfile')}>
       <FontAwesome5 name="user-alt" size={24} color="white" />
       </TouchableOpacity>
     </View>

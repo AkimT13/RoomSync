@@ -72,7 +72,7 @@ const LandlordDashboardScreen = ({ navigation }) => {
           >
             <Text className="text-white text-center text-lg ">Add New Space</Text>
           </TouchableOpacity>
-          <NavBar/> 
+          <NavBar navigation={navigation}/> 
         </>
       )}
     </View>

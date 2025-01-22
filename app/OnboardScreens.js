@@ -15,6 +15,7 @@ import CreateTaskScreen from './CreateTask';
 import RenterProfileScreen from './RenterProfileScreen';
 import MessagesScreen from './Messages'
 import SearchScreen from './Search'
+import SignUpInterestsScreen from './SignUpInterestScreen';
 
 
 const Stack = createStackNavigator();
@@ -26,15 +27,19 @@ const OnboardingNavigator = () => (
       <Stack.Screen options={ {headerShown:false} } name="SignIn" component={SignInScreen} />
       <Stack.Screen options={ {headerShown:false} } name="SignUp" component={SignUpScreen} />
       <Stack.Screen options = {{headerShown: false}} name="RoleSelection" component = {RoleSelectionScreen} />
+      <Stack.Screen options = {{headerShown: false}} name="SignUpInterests" component = {SignUpInterestsScreen} />
+
       <Stack.Screen options = {{headerShown: false}} name = "CreateSpace" component = {CreateSpaceScreen} />
       <Stack.Screen options = {{headerShown: false}} name = "LandLordDashboard" component = {LandlordDashboardScreen} />
       <Stack.Screen options = {{headerShown: false}} name = "RenterDashboard" component = {RenterDashboardScreen} />
       <Stack.Screen options = {{headerShown: false}} name = "SpaceDetails" component = {SpaceDetailsScreen} />
       <Stack.Screen options = {{headerShown: false}} name = "AddRoom" component = {AddRoomScreen} />
       <Stack.Screen options = {{headerShown: false}} name = "CreateTask" component = {CreateTaskScreen} />
-      <Stack.Screen options = {{headerShown: false}} name = "Profile" component = {RenterProfileScreen} />
+      <Stack.Screen options = {{headerShown: false}} name = "RenterProfile" component = {RenterProfileScreen} />
       <Stack.Screen options = {{headerShown: false}} name = "MessagesScreen" component = {MessagesScreen} />
       <Stack.Screen options = {{headerShown: false}} name = "SearchScreen" component = {SearchScreen} />
+
+      
 
 
       

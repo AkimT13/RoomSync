@@ -24,7 +24,7 @@ export default function RoleSelectionScreen({navigation }) {
             alert('Error saving role: ' + error.message);
           } else {
             // Navigate to the next step based on the role
-            navigation.navigate(role === 'landlord' ? 'CreateSpace' : 'RenterDashboard');
+            navigation.navigate(role === 'landlord' ? 'CreateSpace' : 'SignUpInterests');
           }
         }
     
