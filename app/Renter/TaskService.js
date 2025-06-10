@@ -1,4 +1,4 @@
-import { supabase } from '../utils/supabase';
+import { supabase } from '../../utils/supabase';
 
 export const completeTask = async (taskId, spaceId, isRecurring) => {
   try {

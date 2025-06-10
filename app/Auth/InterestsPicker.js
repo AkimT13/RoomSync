@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, Alert } from 'react-native';
-import { supabase } from '../utils/supabase';
+import { supabase } from '../../utils/supabase';
 
 const InterestsPicker = ({ onSave, isSignUpFlow = false, navigation }) => {
   const [predefinedInterests, setPredefinedInterests] = useState([

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { supabase } from '../utils/supabase';
+import { supabase } from '../../utils/supabase'
 
 const AddRoomScreen = ({ route, navigation }) => {
   const { spaceId } = route.params; // Get space ID passed from SpaceDetailsScreen

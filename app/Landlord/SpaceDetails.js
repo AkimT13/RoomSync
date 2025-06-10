@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, FlatList, ScrollView, Alert } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
-import { supabase } from '../utils/supabase';
+import { supabase } from '../../utils/supabase';
 
 const SpaceDetailsScreen = ({ route, navigation }) => {
   const { space } = route.params; // Passed space data

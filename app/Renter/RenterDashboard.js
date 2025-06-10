@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
-import { supabase } from '../utils/supabase';
+import { supabase } from '../../utils/supabase';
 import JoinRoom from './JoinRoom';
 import TaskList from './TaskList';
 import Navbar from './Navbar';

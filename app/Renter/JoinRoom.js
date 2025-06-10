@@ -1,7 +1,7 @@
 // JoinRoom.js
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { supabase } from '../utils/supabase';
+import { supabase } from '../../utils/supabase';
 
 const JoinRoom = ({ onRoomJoined }) => {
   const [roomId, setRoomId] = useState('');

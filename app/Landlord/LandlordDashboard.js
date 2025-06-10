@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
-import { supabase } from '../utils/supabase';
-import NavBar from './Navbar';
+import { supabase } from '../../utils/supabase';
+import NavBar from '../Renter/Navbar';
 const LandlordDashboardScreen = ({ navigation }) => {
   const [spaces, setSpaces] = useState([]);
   const [loading, setLoading] = useState(true);

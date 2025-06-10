@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Alert } from 'react-native';
-import { supabase } from '../utils/supabase';
-import InterestsPicker from './InterestsPicker';
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Alert, Image } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
+import { supabase } from '../../utils/supabase';
+import InterestsPicker from '../Auth/InterestsPicker';
+import Navbar from './Navbar';
 
 const RenterProfileScreen = ({ navigation }) => {
   const [profile, setProfile] = useState({});
+  const [profilePicture, setProfilePicture] = useState('');
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
   const [budgetMin, setBudgetMin] = useState('');
   const [budgetMax, setBudgetMax] = useState('');
   const [moveInDate, setMoveInDate] = useState('');
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -29,6 +33,7 @@ const RenterProfileScreen = ({ navigation }) => {
         console.error('Error fetching profile:', error.message);
       } else {
         setProfile(data);
+        setProfilePicture(data.profile_picture_url || '');
         setName(data.name || '');
         setLocation(data.location || '');
         setBudgetMin(data.budget_min ? data.budget_min.toString() : '');
@@ -39,6 +44,61 @@ const RenterProfileScreen = ({ navigation }) => {
 
     fetchProfile();
   }, []);
+
+  const pickImage = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permissionResult.granted) {
+      Alert.alert('Permission Denied', 'You need to grant permission to access photos.');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      uploadImage(result.uri);
+    }
+  };
+
+  const uploadImage = async (uri) => {
+    try {
+      setUploading(true);
+
+      const response = await fetch(uri);
+      const blob = await response.blob();
+
+      const fileName = `${profile.id}-${Date.now()}.jpg`;
+
+      const { data, error } = await supabase.storage
+        .from('profilePics')
+        .upload(fileName, blob, { cacheControl: '3600', upsert: true });
+
+      if (error) throw error;
+
+      const { data: urlData } = supabase.storage
+        .from('profilePics')
+        .getPublicUrl(data.path);
+
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ profile_picture_url: urlData.publicUrl })
+        .eq('id', profile.id);
+
+      if (updateError) throw updateError;
+
+      setProfilePicture(urlData.publicUrl);
+      Alert.alert('Success', 'Profile picture updated!');
+    } catch (error) {
+      console.error('Error uploading image:', error.message);
+      Alert.alert('Error', 'Failed to upload image.');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSaveProfile = async () => {
     try {
@@ -76,6 +136,29 @@ const RenterProfileScreen = ({ navigation }) => {
         <Text className="text-lg text-gray-400">
           Update your personal information and preferences.
         </Text>
+      </View>
+
+      {/* Profile Picture */}
+      <View className="items-center mb-6">
+        {profilePicture ? (
+          <Image
+            source={{ uri: profilePicture }}
+            className="w-24 h-24 rounded-full mb-4"
+          />
+        ) : (
+          <View className="w-24 h-24 bg-gray-500 rounded-full justify-center items-center mb-4">
+            <Text className="text-white">No Photo</Text>
+          </View>
+        )}
+        <TouchableOpacity
+          onPress={pickImage}
+          className="bg-livingLightBlue py-2 px-4 rounded"
+          disabled={uploading}
+        >
+          <Text className="text-white">
+            {uploading ? 'Uploading...' : 'Change Photo'}
+          </Text>
+        </TouchableOpacity>
       </View>
 
       {/* Name */}
@@ -135,7 +218,10 @@ const RenterProfileScreen = ({ navigation }) => {
       >
         <Text className="text-white text-center text-lg">Save Profile</Text>
       </TouchableOpacity>
+      
+      <Navbar/>
     </ScrollView>
+    
   );
 };
 

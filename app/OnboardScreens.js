@@ -3,19 +3,19 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 
 import WelcomeScreen from './Welcome';
-import SignInScreen from './SignIn';
-import SignUpScreen from './SignUp';
-import RoleSelectionScreen from './RoleSelection';
-import CreateSpaceScreen from './CreateSpaceScreen';
-import LandlordDashboardScreen from './LandlordDashboard';
-import RenterDashboardScreen from './RenterDashboard';
-import SpaceDetailsScreen from './SpaceDetails';
-import AddRoomScreen from './AddRoom';
-import CreateTaskScreen from './CreateTask';
-import RenterProfileScreen from './RenterProfileScreen';
+import SignInScreen from './Auth/SignIn';
+import SignUpScreen from './Auth/SignUp';
+import RoleSelectionScreen from './Auth/RoleSelection';
+import CreateSpaceScreen from './Landlord/CreateSpaceScreen';
+import LandlordDashboardScreen from './Landlord/LandlordDashboard';
+import RenterDashboardScreen from './Renter/RenterDashboard';
+import SpaceDetailsScreen from './Landlord/SpaceDetails';
+import AddRoomScreen from './Landlord/AddRoom';
+import CreateTaskScreen from './Renter/CreateTask';
+import RenterProfileScreen from './Renter/RenterProfileScreen';
 import MessagesScreen from './Messages'
-import SearchScreen from './Search'
-import SignUpInterestsScreen from './SignUpInterestScreen';
+import SearchScreen from './Renter/Search'
+import SignUpInterestsScreen from './Auth/SignUpInterestScreen';
 
 
 const Stack = createStackNavigator();

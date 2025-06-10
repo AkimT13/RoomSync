@@ -1,7 +1,7 @@
 // CreateSpaceScreen.js
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import { supabase } from '../utils/supabase';
+import { supabase } from '../../utils/supabase';
 
 const CreateSpaceScreen = ({ navigation }) => {
   const [name, setName] = useState('');

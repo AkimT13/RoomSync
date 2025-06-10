@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, FlatList, ScrollView } from 'react-native';
-import { supabase } from '../utils/supabase';
+import { supabase } from '../../utils/supabase';
 
 const CreateTaskScreen = ({ navigation }) => {
   const [title, setTitle] = useState('');

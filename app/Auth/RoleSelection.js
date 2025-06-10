@@ -1,6 +1,6 @@
 import { View, Text, Pressable } from 'react-native';
 import React from 'react';
-import {supabase} from '../utils/supabase'
+import {supabase} from '../../utils/supabase'
 
 
 export default function RoleSelectionScreen({navigation }) {
